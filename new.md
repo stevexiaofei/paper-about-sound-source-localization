@@ -3,7 +3,7 @@ import org.apache.commons.math3.complex.Complex;
 import org.apache.commons.math3.transform.DftNormalization;
 import org.apache.commons.math3.transform.FastFourierTransformer;
 import org.apache.commons.math3.transform.TransformType;
-
+import edu.emory.mathcs.jtransforms.fft.DoubleFFT_1D;
 interface TestCase{
    public Object run(List<Object> params) throws Exception;
    public List<Object> getParams();
@@ -89,7 +89,7 @@ public class TimeCostCalculator{
 	   
    }
    public static void main(String[] args) throws Exception{
-	   double[] input =new double[24];
+	   double[] input =new double[160];
 	   for(int i=0;i<input.length;i++){
 		   input[i]=i;
 	   }
