@@ -1,39 +1,109 @@
-# 工作日记
+import java.util.*;
+import org.apache.commons.math3.complex.Complex;
+import org.apache.commons.math3.transform.DftNormalization;
+import org.apache.commons.math3.transform.FastFourierTransformer;
+import org.apache.commons.math3.transform.TransformType;
 
-			Args:
-				sess: TensorFlow session
-		"""
-		self.sess = sess
-		self.cfg= cfg
-		self.num_mics = cfg['num_mics']
-		self.input_channels = cfg['num_channels']
-		self.num_frames= cfg['num_frames']
-		self.build_model()
-		t_vars = tf.trainable_variables()
-		restore_var = list(filter(lambda x: 'discriminator' not in x.name, t_vars))
+interface TestCase{
+   public Object run(List<Object> params) throws Exception;
+   public List<Object> getParams();
+}
+class CalcFFT implements TestCase{
+	public CalcFFT(){
+      System.out.print("本算例用于计算快速傅立叶变换。正在初始化 计算数据(" + arrayLength + "点)... ...");
+      inputData = new double[arrayLength];
+      for (int index = 0; index < inputData.length; index++){
+         inputData[index] = (Math.random() - 0.5) * 100.0;
+      }
+      System.out.println("初始化完成");
+   }
+   @Override
+   public List<Object> getParams(){
+      return null;
+   }
+   @Override
+   public Object run(List<Object> params) throws Exception{
+      FastFourierTransformer fft = new FastFourierTransformer(DftNormalization.STANDARD);
+      Complex[] result = fft.transform(inputData, TransformType.FORWARD);
+      return result;
+   }
+   private double[] inputData = null;
+   private final int arrayLength = 1024;
+}
+
+public class TimeCostCalculator{
+   public TimeCostCalculator()
+   {
+   }
+   /**
+
+    * 计算指定对象的运行时间开销。
+
+    * 
+
+    * @param testCase 指定被测对象。
+
+    * @return 返回sub.run的时间开销，单位为s。
+
+    * @throws Exception
+
+    */
+
+   public double calcTimeCost(TestCase testCase) throws Exception{
+      List<Object> params = testCase.getParams();
+      long startTime = System.nanoTime();
+      testCase.run(params);
+      long stopTime = System.nanoTime();
+      System.out.println("start: " + startTime + " / stop: " + stopTime);
+      double timeCost = (stopTime - startTime) * 1.0e-9;
+      //      double timeCost = BigDecimal.valueOf(stopTime - startTime, 9).doubleValue();
+
+      return timeCost;
+   }
+   public static double[] data_processing(double[] input){
+		int data_len = input.length;
+		int seg_len = data_len/3;
+		double[] res = new double[data_len/4];
+		FastFourierTransformer fft = new FastFourierTransformer(DftNormalization.STANDARD);
+		for(int i=0;i<data_len;i++){
+			System.out.println(input[i]);
+		}
+		int index=0;
+		for(int i=0;i<3;i++){
+			double[] temp =new double[data_len/6];
+			System.out.println(' ');
+			for(int j=0;j<temp.length;j++){
+				temp[j] = input[i*seg_len+2*j];
+				System.out.println(temp[j]);
+			}
+			System.out.println(' ');
+			Complex[] result = fft.transform(temp, TransformType.FORWARD);
+			for(int j=0;j<result.length/2;j++){
+				res[index++]=result[j].abs();
+			}
+			
+		}
 		
-		#variables_to_restore = slim.get_variables_to_restore(exclude=exclude)
-		self.model_path = os.path.join(cfg['exp_name'],'checkpoint')
-		self.saver = tf.train.Saver(restore_var)
-		self.saver_all= tf.train.Saver()
-		init_op = tf.global_variables_initializer()
-		self.sess.run(init_op)
-	def build_model(self):
-		self.input = tf.placeholder(tf.float32,[None,self.num_frames,self.num_mics, self.input_channels],
-                                        name='input')
-		input = tf.reshape(self.input,[-1,self.num_mics,self.input_channels])
-		out = convolutionID(input, 3, self.input_channels//2)
-		out = upsample(out, 2, self.input_channels//4)#num_directions=6*2=12 channels=256
-		
-		out = convolutionID(out, 3, self.input_channels//8)
-		out = upsample(out, 2, self.input_channels//16)#num_directions=6*4=24 channel=64
-		
-		out = convolutionID(out, 3, self.input_channels//32)
-		out = upsample(out, 2, self.input_channels//64)#num_directions=6*8=48 channels=16
-		
-		out = convolutionID(out, 3, self.input_channels//128)
-		out = upsample(out, 2, self.input_channels//256)#num_directions=6*16=96  channels=4
-		
-		out = convolutionID(out, 3, self.input_channels//512)
-		out = upsample(out, 2, self.input_channels//1024)#num_directions=6*32=192 channels=1
-	
+		//Complex[] result = fft.transform(inputData, TransformType.FORWARD);
+	   return res;
+	   
+   }
+   public static void main(String[] args) throws Exception{
+	   double[] input =new double[24];
+	   for(int i=0;i<input.length;i++){
+		   input[i]=i;
+	   }
+	   double[] res = data_processing(input);
+	   for(int i=0;i<res.length;i++){
+		   double it =res[i];
+		   System.out.println(it);
+	   }
+      // TimeCostCalculator tcc = new TimeCostCalculator();
+      // double timeCost;
+      // System.out.println("--------------------------------------------------------------------------");
+      // timeCost = tcc.calcTimeCost(new CalcFFT());
+      // System.out.println("time cost is: " + timeCost + "s");
+      // System.out.println("--------------------------------------------------------------------------");
+   }
+   
+}
