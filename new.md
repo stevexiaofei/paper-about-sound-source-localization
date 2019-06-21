@@ -1,5 +1,3 @@
-Video Imprint Segmentation for Temporal Action Detection in Untrimmed Videos
-Video Imprint
-FIVR: Fine-grained Incident Video Retrieval
-Learning to align and match videos with kernelized temporal layers
-SiamRPN++
+AVATAR: Fixing Semantic Bugs withFix Patterns of Static Analysis Violations
+Mining Fix Patterns for FindBugs Violations
+Bug Localization with Combination ofDeep Learning and Information Retrieval
