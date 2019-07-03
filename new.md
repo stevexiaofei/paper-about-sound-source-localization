@@ -24,3 +24,4 @@ Matching and Mutual Information
  A Multi-State Constraint Kalman Filter
 for Vision-aided Inertial Navigation
 Scene Memory Transformer for Embodied Agents in Long-Horizon Tasks
+Joint Unsupervised Learning of Depth, Camera Motion, Optical Flow and Motion Segmentation
