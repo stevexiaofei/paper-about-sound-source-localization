@@ -19,3 +19,7 @@ Correspondence Algorithms
 Stereo Processing by Semiglobal
 Matching and Mutual Information
 结合法向信息的立体１７１；配研究
+ A Platform for Embodied AI Research
+ Dynamic Object-Level SLAM with Probabilistic Data Association
+ A Multi-State Constraint Kalman Filter
+for Vision-aided Inertial Navigation
