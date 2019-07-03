@@ -14,3 +14,7 @@ End-to-End Learning of Geometry and Context for Deep Stereo Regression
 3D LiDAR and Stereo Fusion using Stereo Matching Network with
 Conditional Cost Volume Normalization
 SGM-Nets
+A Taxonomy and Evaluation of Dense Two-Frame Stereo
+Correspondence Algorithms
+Stereo Processing by Semiglobal
+Matching and Mutual Information
