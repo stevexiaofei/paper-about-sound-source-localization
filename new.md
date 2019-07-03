@@ -23,3 +23,4 @@ Matching and Mutual Information
  Dynamic Object-Level SLAM with Probabilistic Data Association
  A Multi-State Constraint Kalman Filter
 for Vision-aided Inertial Navigation
+Scene Memory Transformer for Embodied Agents in Long-Horizon Tasks
